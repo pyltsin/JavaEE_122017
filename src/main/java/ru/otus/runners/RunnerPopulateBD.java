@@ -17,7 +17,7 @@ public class RunnerPopulateBD {
         Properties properties = new Properties();
         properties.load(RunnerPopulateBD.class.getResourceAsStream("/bd/bd.properties"));
         Connection connection = UtilsBD.getSimpleConnection(properties);
-        List<String> listPath = Arrays.asList("/bd/populateDBCity.txt", "/bd/populateDBDepartment.txt", "/bd/populateDBPosition.txt", "/bd/populateDBEmployee.txt");
+        List<String> listPath = Arrays.asList("/bd/deleteAll.txt","/bd/populateDBCity.txt", "/bd/populateDBDepartment.txt", "/bd/populateDBPosition.txt", "/bd/populateDBEmployee.txt");
         listPath.forEach(s -> {
             File file = new File(RunnerPopulateBD.class.getResource(s).getFile());
             try {

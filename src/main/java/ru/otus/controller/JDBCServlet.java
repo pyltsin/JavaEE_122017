@@ -3,6 +3,7 @@ package ru.otus.controller;
 import ru.otus.dao.DaoCrud;
 import ru.otus.dao.DaoEmployee;
 import ru.otus.dao.DaoReference;
+import ru.otus.exception.BisunessException;
 import ru.otus.model.City;
 import ru.otus.model.Department;
 import ru.otus.model.Employee;
@@ -17,7 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 
 @WebServlet("/JDBCServlet")
@@ -67,13 +71,14 @@ public class JDBCServlet extends HttpServlet {
         stringBuilder.append("All rows  \n");
         List<Employee> employeeList = daoEmployee.getAll();
         employeeList.forEach(employee -> {
-            stringBuilder.append("Employee: ").append(employee.toString());
-            stringBuilder.append("Position: ").append(employee.getPosition().toString());
-            stringBuilder.append("Department: ").append(daoDepartment.get(employee.getDepartmentId()).toString());
-            stringBuilder.append("Department: ").append(daoCity.get(employee.getCityId()).toString());
+            stringBuilder.append("\nEmployee: ").append(employee.toString());
+            stringBuilder.append("\nPosition: ").append(employee.getPosition().toString());
+            stringBuilder.append("\nDepartment: ").append(daoDepartment.get(employee.getDepartmentId()).toString());
+            stringBuilder.append("\nCity: ").append(daoCity.get(employee.getCityId()).toString());
             stringBuilder.append("\n");
         });
 
+        stringBuilder.append("\n");
         stringBuilder.append("update:  \n");
 
         Employee employee1 = employeeList.get(1);
@@ -83,10 +88,25 @@ public class JDBCServlet extends HttpServlet {
 
         Employee out = daoEmployee.get(employee1.getId());
         stringBuilder.append(out.toString());
-
+        stringBuilder.append("\n");
         stringBuilder.append("delete:  \n");
         daoEmployee.delete(employee1.getId());
         stringBuilder.append(daoEmployee.getAll().size());
+
+        stringBuilder.append("\n");
+        stringBuilder.append("procedure:  \n");
+        try (Connection connection = ds.getConnection()) {
+            CallableStatement callableStatement =
+                    connection.prepareCall("CALL TESTOUT(?)");
+            callableStatement.registerOutParameter(1, Types.NVARCHAR);
+            callableStatement.executeUpdate();
+            String dt = callableStatement.getString(1);
+            stringBuilder.append(dt).append("\n");
+        } catch (SQLException e) {
+            throw new BisunessException(e);
+        }
+
         writer.append(stringBuilder.toString());
+
     }
 }
