@@ -29,6 +29,7 @@ import java.util.List;
 public class RunnerJsonXml {
     public static void main(String[] args) throws SQLException, JAXBException, ParserConfigurationException, IOException, SAXException, XPathExpressionException {
         //part1
+        System.out.println("PART 1");
         String pathname = "C://java_my/file.xml";
         File file = new File(pathname);
         OracleDataSource dataSource = new OracleDataSource();
@@ -47,6 +48,7 @@ public class RunnerJsonXml {
         marshaller.marshal(employees, file);
         marshaller.marshal(employees, System.out);
         //part2
+        System.out.println("PART 2");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -72,6 +74,7 @@ public class RunnerJsonXml {
             System.out.println("Login:" + value);
         }
         //part3
+        System.out.println("PART 3");
         JSONObject jsonObject = XML.toJSONObject(FileUtils.readFileToString(file, Charset.forName("UTF-8")));
         String json = jsonObject.toString(4);
         String pathJson = "C://java_my/file.json";
@@ -79,6 +82,7 @@ public class RunnerJsonXml {
                 json, "UTF-8");
 
         //part4
+        System.out.println("PART 4");
         Gson gson = new Gson();
         Employees employeesFromJson = gson.fromJson(new FileReader(pathJson), Employees.class);
         employeesFromJson.getEmployees().forEach(employee -> System.out.println(employee.getId() + ' ' + employee.getName()));
