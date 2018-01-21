@@ -78,6 +78,7 @@ public class RunnerJsonXml {
         JSONObject jsonObject = XML.toJSONObject(FileUtils.readFileToString(file, Charset.forName("UTF-8")));
         String json = jsonObject.toString(4);
         String pathJson = "C://java_my/file.json";
+        System.out.println(json);
         FileUtils.writeStringToFile(new File(pathJson),
                 json, "UTF-8");
 
@@ -85,6 +86,6 @@ public class RunnerJsonXml {
         System.out.println("PART 4");
         Gson gson = new Gson();
         Employees employeesFromJson = gson.fromJson(new FileReader(pathJson), Employees.class);
-        employeesFromJson.getEmployees().forEach(employee -> System.out.println(employee.getId() + ' ' + employee.getName()));
+        employeesFromJson.getEmployees().forEach(employee -> System.out.println(employee.getId() + ':' + employee.getName()));
     }
 }
