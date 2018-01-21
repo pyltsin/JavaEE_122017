@@ -24,7 +24,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RunnerJsonXml {
@@ -82,7 +81,6 @@ public class RunnerJsonXml {
         //part4
         Gson gson = new Gson();
         Employees employeesFromJson = gson.fromJson(new FileReader(pathJson), Employees.class);
-        employeesFromJson.getEmployees().stream().filter(employee -> employee.getId() % 2 != 0)
-                .forEach(System.out::println);
+        employeesFromJson.getEmployees().forEach(employee -> System.out.println(employee.getId() + ' ' + employee.getName()));
     }
 }
